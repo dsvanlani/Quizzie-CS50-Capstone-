@@ -4,5 +4,24 @@ Quizzie - Home
 {% endblock %}
 
 {% block body %}
-<h1>Quizzie</h1>
+{% load static %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div id="home-badge">
+            <div class="row justify-content-center">
+                <img class="img-fluid" id="home-logo" src="{% static 'images/logo_transparent.png' %}">
+            </div>
+            <div class="row justify-content-center">
+                <a href="{% url 'new-quiz' %}" class="btn btn-info btn-block home-button">Create New Quiz</a>
+            </div>
+            <div class="row justify-content-center">
+                <a href="{% url 'quiz-list' %}" class="btn btn-info btn-block home-button">View All Quizzes</a>
+            </div>
+            <div class="row justify-content-center">
+                <a href="#" class="btn btn-info btn-block home-button">Take Random Quiz</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

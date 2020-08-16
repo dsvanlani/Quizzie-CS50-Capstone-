@@ -18,4 +18,8 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('all-quizzes', views.quiz_list, name="quiz-list"),
+    path('quiz/<str:quiz_url>', views.take_quiz),
+    path('new/', views.make_quiz, name="new-quiz"),
+    path('new/make-quiz-fetch', views.make_quiz_fetch)
 ]
