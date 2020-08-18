@@ -3,11 +3,44 @@
 {{quiz.title}}
 {% endblock %}
 
+{% block script %}
+{% load static %}
+<script src="{% static 'javascript/take-quiz.js' %}"></script>
+{% endblock %}
+
 {% block body %}
+
 <div class="row justify-content-center">
-    <div class="take-quiz-container">
-        <h1>{{ quiz.title }}</h1>
+    <div class="take-quiz-container" id="welcome-view">
+        <div class="row justify-content-center"><h1>{{ quiz.title }}</h1></div>
+        <div class="row justify-content-center"><p class="float-center">A quiz by {{quiz.author}}</p></div>
+        <div class="row justify-content-center"><button id="get-started-button" class="btn btn-info">Get Started</button></div>
     </div>
+
+    {% for question in questions %}
+    <div class="take-quiz-container question-view" id="view-{{question.question_number}}">
+        <b>{{question.question_number}}. {{ question.text }}</b><br>
+        <form>
+        {% for answer in answers %}
+            {% if answer.question == question %}
+                    <input type="radio" name="question-{{question.question_number}}" id="{{ answer | cut:' ' }}" value="{{answer}}"  data-result="{{answer.for_result }}">
+                    <label for="{{ answer | cut:' ' }}">{{ answer }}</label><br>
+            {% endif %}
+        {% endfor %}
+        </form>
+    </div>
+    {% endfor %}
+    <div class="take-quiz-container question-view">
+        <div class="row justify-content-center">
+            <a href="#" class="btn btn-info" id="get-results-button">Get Results</a>
+        </div>
+    </div>
+    {% for result in results %}
+        <div class="take-quiz-container result-view" id="result-{{ result.result_title | cut:' ' }}" data-resultName="{{ result }}">
+        <div class="row justify-content-center"><h3>{{result.result_title}}</h3></div>
+            <p>{{result.result_description}}</p>
+        </div>
+    {% endfor %}
 </div>
 
 {% endblock %}

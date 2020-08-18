@@ -14,7 +14,11 @@ def home(request):
 
 
 def quiz_list(request):
-    return render(request, 'quizapp/quiz-list.html')
+    all_quizzes = Quiz.objects.all()
+    context = {
+        "quizzes": all_quizzes
+    }
+    return render(request, 'quizapp/quiz-list.html', context)
 
 
 def make_quiz(request):
@@ -79,7 +83,20 @@ def make_quiz_fetch(request):
 
 def take_quiz(request, quiz_url):
     quiz = Quiz.objects.get(url=quiz_url)
+    questions = Question.objects.filter(quiz=quiz)
+    i=1
+    answers = Answer.objects.none()
+    for question in questions:
+        question.question_number = i
+        i += 1
+        answers |= Answer.objects.filter(question=question)
+
+    results = Result.objects.filter(quiz=quiz)
+
     context = {
-        'quiz': quiz
+        'quiz': quiz,
+        'questions': questions,
+        'answers': answers,
+        'results': results
     }
     return render(request, 'quizapp/take-quiz.html', context)

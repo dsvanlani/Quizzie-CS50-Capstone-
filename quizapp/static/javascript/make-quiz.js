@@ -338,6 +338,7 @@ function finishQuiz() {
 
     document.querySelector('#state-5').style.display = "block"
     document.querySelector('#state-4').style.display = "none"
+    
   }
 
   })

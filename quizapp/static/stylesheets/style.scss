@@ -26,7 +26,7 @@ body {
     margin-bottom: 2px;
     }
 
-.make-quiz-container {
+.make-quiz-container, .take-quiz-container {
    width: 80%;
    height: auto;
    background: white;
@@ -81,3 +81,7 @@ body {
 #state-1, #state-2, #state-3, #state-4, #state-5 {
     display: none;
         }
+
+.result-view, .question-view {
+    display: none;
+    }

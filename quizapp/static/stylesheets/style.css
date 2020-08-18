@@ -26,7 +26,7 @@ body {
   margin-bottom: 2px;
 }
 
-.make-quiz-container {
+.make-quiz-container, .take-quiz-container {
   width: 80%;
   height: auto;
   background: white;
@@ -34,42 +34,46 @@ body {
   margin-top: 30px;
   padding: 20px;
 }
-.make-quiz-container button {
+.make-quiz-container button, .take-quiz-container button {
   margin: 2px;
 }
-.make-quiz-container .progress {
+.make-quiz-container .progress, .take-quiz-container .progress {
   margin-bottom: 15px;
 }
-.make-quiz-container #quiz-name, .make-quiz-container #author-name {
+.make-quiz-container #quiz-name, .make-quiz-container #author-name, .take-quiz-container #quiz-name, .take-quiz-container #author-name {
   width: 75%;
 }
-.make-quiz-container input, .make-quiz-container label {
+.make-quiz-container input, .make-quiz-container label, .take-quiz-container input, .take-quiz-container label {
   margin: 10px;
 }
-.make-quiz-container .result-description {
+.make-quiz-container .result-description, .take-quiz-container .result-description {
   width: 90%;
   height: 100px;
   margin: 10px;
 }
-.make-quiz-container .question-body {
+.make-quiz-container .question-body, .take-quiz-container .question-body {
   width: 90%;
   margin: 10px;
 }
-.make-quiz-container h4 {
+.make-quiz-container h4, .take-quiz-container h4 {
   margin: 10px;
 }
-.make-quiz-container .answer {
+.make-quiz-container .answer, .take-quiz-container .answer {
   width: 50%;
 }
-.make-quiz-container .answer-trash-icon {
+.make-quiz-container .answer-trash-icon, .take-quiz-container .answer-trash-icon {
   margin-top: 12px;
   margin-right: 20px;
 }
-.make-quiz-container svg:hover {
+.make-quiz-container svg:hover, .take-quiz-container svg:hover {
   background-color: LightGray;
 }
 
 #state-1, #state-2, #state-3, #state-4, #state-5 {
+  display: none;
+}
+
+.result-view, .question-view {
   display: none;
 }
 

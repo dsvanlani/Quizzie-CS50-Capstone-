@@ -1,0 +1,15 @@
+{% extends 'quizapp/layout.html' %}
+
+{% block title%}Quizzie - Browse{% endblock %}
+{% block body %}
+<div class="container list-container">
+    <ul id="quiz-list">
+    {% for quiz in quizzes %}
+        <li>
+            {{ quiz }} <a class="btn btn-link" href="/quiz/{{ quiz.url }}">Take</a>
+        </li>
+    {% endfor %}
+
+    </ul>
+</div>
+{% endblock %}
