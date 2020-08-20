@@ -1,25 +1,51 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import json
 from secrets import token_urlsafe
 from quizapp.models import *
 import traceback
+from random import randrange
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
 
 def home(request):
-    return render(request, 'quizapp/home.html')
+    context = {
+        "navbar_exempt": True
+    }
+    return render(request, 'quizapp/home.html', context)
 
 
 def quiz_list(request):
     all_quizzes = Quiz.objects.all()
-    context = {
-        "quizzes": all_quizzes
-    }
+
+    if request.GET.get('search'):
+        results = Quiz.objects.none()
+        substring = request.GET.get('search')
+        i=0
+        while i < len(all_quizzes):
+            quiz = all_quizzes[i]
+            if substring in quiz.title or substring in quiz.author:
+                results |= Quiz.objects.filter(id=quiz.id)
+            i += 1
+
+        context = {
+            "quizzes": results,
+            "search": substring
+        }
+
+    else:
+        context = {
+            "quizzes": all_quizzes
+        }
     return render(request, 'quizapp/quiz-list.html', context)
 
+def random_quiz(request):
+    all_quizzes = Quiz.objects.all()
+    quiz = all_quizzes[randrange(len(all_quizzes))]
+
+    return redirect('/quiz/'+quiz.url)
 
 def make_quiz(request):
     return render(request, 'quizapp/make-quiz.html')
@@ -79,7 +105,6 @@ def make_quiz_fetch(request):
 
 
     return JsonResponse(message)
-
 
 def take_quiz(request, quiz_url):
     quiz = Quiz.objects.get(url=quiz_url)

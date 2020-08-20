@@ -19,7 +19,7 @@ function findWinner(object) {
 }
 
 function getResults() {
-  votes = new Object           // Initialize votes to 0
+  votes = new Object                                      // Initialize votes to 0
   document.querySelectorAll('.result-view').forEach(element => {
     votes[element.dataset.resultname] = 0
   })
@@ -31,7 +31,7 @@ function getResults() {
     }
   })
 
-  winner = findWinner(votes)
+  winner = findWinner(votes)                              // finds the winner
   winnerNoSpaces = winner.split(" ").join("")
 
   document.querySelector('#result-'+winnerNoSpaces).style.display= "block"
@@ -39,7 +39,6 @@ function getResults() {
     view.style.display = "none"
   })
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   // ------------ CONFIGURE BUTTONS  ------------------

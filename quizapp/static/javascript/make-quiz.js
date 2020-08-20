@@ -52,7 +52,7 @@ function appendResult() {
     var input1 = document.createElement('input')            //Result Name Input
     input1.setAttribute('type','text')
     input1.setAttribute('id', 'result-name-'+i)
-    input1.setAttribute('class', 'result-name')
+    input1.setAttribute('class', 'result-name required-field')
     input1.setAttribute('placeholder', 'e.g. Katara')
     var br = document.createElement('br')
     var label2 = document.createElement('label')            //Result Description Label
@@ -60,7 +60,7 @@ function appendResult() {
     label2.innerText = "Result Description:"
     var input2 = document.createElement('textarea')         // Result Description Input
     input2.setAttribute('id', 'result-description-'+i)
-    input2.setAttribute('class', 'result-description')
+    input2.setAttribute('class', 'result-description required-field')
     input2.setAttribute('placeholder', 'e.g. A passionate water-bender')
     var hr = document.createElement('hr')                   // Horizontal Line
 
@@ -81,8 +81,7 @@ function appendResult() {
 // -------- function to append a new question onto the document (state 3) ------
 function appendQuestion() {
 
-  let i = document.querySelectorAll('.question-form').length
-  i++
+  let i = Date.now()
 
   var questionForm = document.createElement('div')              // all elements go in here
   questionForm.setAttribute('class','question-form')
@@ -96,7 +95,7 @@ function appendQuestion() {
     var br = document.createElement('br')
     var questionInput = document.createElement('textarea')      // question body input
     questionInput.setAttribute('id','question-body-'+i)
-    questionInput.setAttribute('class', 'question-body')
+    questionInput.setAttribute('class', 'question-body required-field')
 
   var answersBlock = document.createElement('div')
   answersBlock.setAttribute('class','answers-block')
@@ -108,9 +107,11 @@ function appendQuestion() {
 
       var answerLabel = document.createElement('label')         //create answer label
       answerLabel.innerText = 'Answer:'
+      answerLabel.setAttribute('for', 'AI'+i)
       var answerInput = document.createElement('input')         //create answer input
       answerInput.setAttribute('type','text')
-      answerInput.setAttribute('class','answer mx-auto')
+      answerInput.setAttribute('class','answer mx-auto required-field')
+      answerInput.setAttribute('id', 'AI'+i)
       colDiv1.appendChild(answerLabel)
       colDiv1.appendChild(answerInput)                          // Put them in same column
 
@@ -119,8 +120,10 @@ function appendQuestion() {
 
       var resultSelectLabel = document.createElement('label')       // select label
       resultSelectLabel.innerText = 'For Result:'
+      resultSelectLabel.setAttribute('for','SI'+i)
       var resultSelectInput = document.createElement('select')      // result input
-      resultSelectInput.setAttribute('class','result-selector')
+      resultSelectInput.setAttribute('class','result-selector required-field')
+      resultSelectInput.setAttribute('id', 'SI'+i)
       //  --------  This gets populated by function "populateSelector" when you hit "next" or "back"
       colDiv2.appendChild(resultSelectLabel)
       colDiv2.appendChild(resultSelectInput)
@@ -163,27 +166,34 @@ function appendQuestion() {
 // ------ function to add another answer field onto the document (state 3)
 function appendAnswer() {
 
+  dateString = String(Date.now())
   var rowDiv = document.createElement('div')                   // row for the answers area
   rowDiv.setAttribute('class', 'row no-gutters')
 
     var colDiv1 = document.createElement('div')                // make a column
     colDiv1.setAttribute('class','col')
 
+      uniqueID = 'AI' + dateString
       var answerLabel = document.createElement('label')           //create answer label
       answerLabel.innerText = 'Answer:'
+      answerLabel.setAttribute('for', uniqueID)
       var answerInput = document.createElement('input')           //create answer input
       answerInput.setAttribute('type','text')
-      answerInput.setAttribute('class','answer mx-auto')
+      answerInput.setAttribute('class','answer mx-auto required-field')
+      answerInput.setAttribute('id', uniqueID)
       colDiv1.appendChild(answerLabel)
       colDiv1.appendChild(answerInput)                         // Put them in same column
 
     var colDiv2 = document.createElement('div')                // make another column
     colDiv2.setAttribute('class','col')
 
+      uniqueID = 'RS' + dateString
       var resultSelectLabel = document.createElement('label')       // select label
       resultSelectLabel.innerText = 'For Result:'
+      resultSelectLabel.setAttribute('for', uniqueID)
       var resultSelectInput = document.createElement('select')      // result input
-      resultSelectInput.setAttribute('class','result-selector')
+      resultSelectInput.setAttribute('class','result-selector required-field')
+      resultSelectInput.setAttribute('id', uniqueID)
 
       var trashDiv = document.createElement('div')
       trashDiv.innerHTML = document.querySelector('#trash-can-icon-2').innerHTML
@@ -323,25 +333,45 @@ function populateReview() {
 }
 
 function finishQuiz() {
-  // I send the localStorage data to the server
-  fetch('/new/make-quiz-fetch', {
-  method: 'POST',
-  body: JSON.stringify(localStorage)
-})
-.then(response => response.json())
-.then(result => {
-  console.log(result)
-  if (result.message == "success") {
-    quizUrl = '/quiz/'+result.url
-    document.querySelector('#new-quiz-link').setAttribute('href',quizUrl)
-    document.querySelector('#new-quiz-url').value = 'localhost:8000'+quizUrl
-
-    document.querySelector('#state-5').style.display = "block"
-    document.querySelector('#state-4').style.display = "none"
-    
-  }
-
+  // ---------- Check that all the fields have a value -----------
+  missingField = false
+  document.querySelectorAll('.required-field').forEach(node => {
+    if (!node.value) {
+      missingField = true
+      node.labels.forEach(label => {
+          label.style.color = 'red'
+      })
+    } else {
+      node.labels.forEach(label => {
+        label.style.color = 'black'
+      })
+    }
   })
+
+  if (missingField) {
+    /// ------- Raise alerts about the missing fields.
+    document.querySelector('#required-field-alert').style.display = "block"
+  } else {
+      // I send the localStorage data to the server
+    fetch('/new/make-quiz-fetch', {
+    method: 'POST',
+    body: JSON.stringify(localStorage)
+  })
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+    if (result.message == "success") {
+      document.querySelector('#required-field-alert').style.display = "none"
+      quizUrl = '/quiz/'+result.url
+      document.querySelector('#new-quiz-link').setAttribute('href',quizUrl)
+      document.querySelector('#new-quiz-url').value = 'localhost:8000'+quizUrl
+
+      document.querySelector('#state-5').style.display = "block"
+      document.querySelector('#state-4').style.display = "none"
+      }
+
+    })
+  }
 }
 
 function copyQuizUrl() {
@@ -357,6 +387,24 @@ function copyQuizUrl() {
 
   /* Alert the copied text */
   alert("Copied the text: " + copyText.value);
+}
+
+function goToError() {
+  nodes = document.querySelectorAll('.required-field')
+  errorFound = false
+  i = 0
+  while (!errorFound) {
+    node = nodes[i]
+    if (!node.value) {
+      document.querySelectorAll('.state').forEach(state => {       // hide all the states once you find the first
+        state.style.display = "none"                              // error
+      })
+      node.closest('.state').style.display = "block"
+      errorFound = true
+    }
+    i++
+  }
+  document.querySelector('#required-field-alert').style.display = "none"
 }
 
 // ------- ON PAGE LOAD -------------
@@ -378,6 +426,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- configure the copy url button
     document.querySelector('#url-copy-button').onclick = copyQuizUrl
+    // ---- configure link in warning
+    document.querySelector('#warning-link').onclick = goToError
     // ------ Populate the result block initially
     appendResult()
     appendResult()

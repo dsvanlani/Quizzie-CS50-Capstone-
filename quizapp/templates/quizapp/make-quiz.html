@@ -8,9 +8,12 @@
 {% endblock %}
 
 {% block body %}
+<div class="alert alert-warning" id="required-field-alert">
+    Oops - looks like you're missing some required fields <a href="#" id="warning-link">here...</a><br>
+</div>
 
 <!-- EXPLANATION VIEW -->
-<div id="state-0">
+<div id="state-0" class="state">
     <div class="row justify-content-center">
         <div class="make-quiz-container">
             <div class="row justify-content-center">
@@ -56,7 +59,7 @@
 </div>
 
 <!-- STEP 1: QUIZ NAME, AUTHOR -->
-<div id="state-1">
+<div id="state-1" class="state">
     <div class="row justify-content-center">
         <div class="make-quiz-container">
 
@@ -69,31 +72,21 @@
             <div class="row justify-content-center">
                 <h3>Step 1: Specify your quiz name and author.</h3>
             </div>
-            <hr>
 
-
-            <!-- Quiz Name Field -->
-            <div class="row justify-content-center">
-                <div class="col-3">
-                    <label class="float-right" for="quiz-name"><strong>Title:</strong></label>
-                </div>
-                <div class="col-9">
-                    <input type="text" id="quiz-name" placeholder="e.g. Which Avatar: The Last Airbender Character are you?">
-                </div>
-            </div>
-
-            <!-- Author name Field -->
-            <div class="row justify-content-center">
-                <div class="col-3">
-                    <label class="float-right" for="author-name"><strong>Author:</strong></label>
-                </div>
-                <div class="col-9">
-                    <input type="text" id="author-name" placeholder="Your name here">
-                </div>
-            </div>
-
+            <!-- Quiz Name and Author -->
+            <table class="table">
+                <tr>
+                    <td><label class="float-right" for="quiz-name"><strong>Title:</strong></label></td>
+                    <td><input type="text" id="quiz-name" class="required-field" placeholder="e.g. Which Avatar: The Last Airbender Character are you?"></td>
+                </tr>
+                <tr>
+                    <td><label class="float-right" for="author-name"><strong>Author:</strong></label></td>
+                    <td><input type="text" id="author-name" class="required-field" placeholder="Your name here"></td>
+                </tr>
+            </table>
 
             <!-- BACK AND NEXT BUTTONS -->
+            <hr>
             <div class="row justify-content-center">
                 <button class="btn btn-secondary back-button" data-state="1">Back</button>
                 <button class="btn btn-info next-button" data-state="1">Next Step</button>
@@ -104,7 +97,7 @@
 </div>
 
 <!-- STEP 2: POSSIBLE RESULTS AND EXPLANATIONS -->
-<div id="state-2">
+<div id="state-2" class="state">
     <div class="row justify-content-center">
         <div class="make-quiz-container">
             <!-- PROGRESS BAR -->
@@ -140,7 +133,7 @@
 
 <!-- STEP 3: MAKE UP THE QUESTIONS, ANSWERS, AND
      WHAT RESULT THE ANSWER CORRESPONDS TO -->
-<div id="state-3">
+<div id="state-3" class="state">
     <div class="row justify-content-center">
         <div class="make-quiz-container">
 
@@ -173,7 +166,7 @@
 
 
 <!-- STEP 4: CONFIRM AND SUBMIT (SUMMARY VIEW) -->
-<div id="state-4">
+<div id="state-4" class="state">
     <div class="row justify-content-center">
         <div class="make-quiz-container">
             <!-- PROGRESS BAR -->
@@ -212,7 +205,7 @@
 </div>
 
 <!-- SUCCESSFUL CREATION VIEW -->
-<div id="state-5">
+<div id="state-5" class="state">
     <div class="row justify-content-center">
         <div class="make-quiz-container">
             <!-- PROGRESS BAR -->

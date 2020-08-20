@@ -16,6 +16,37 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+  <!-- NAV BAR -->
+  {% if navbar_exempt %}
+  {% else %}
+  <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img src="{% static 'images/logo_transparent.png' %}" style="width:75px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'new-quiz' %}">Create New Quiz</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'quiz-list' %}">Browse Quizzes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'random-quiz' %}">Take Random Quiz</a>
+                </li>
+            </ul>
+            <form action='{% url "quiz-list" %}' class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search for a Quiz" aria-label="Search">
+              <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+            </form>
+      </div>
+  </nav>
+  {% endif %}
+
 {% block body %}
 {% endblock %}
 

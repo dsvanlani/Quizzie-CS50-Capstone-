@@ -81,8 +81,8 @@ body {
   display: none;
 }
 
-.result-view a {
+#result-view button {
   margin: 3px;
 }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=stylecss.map */

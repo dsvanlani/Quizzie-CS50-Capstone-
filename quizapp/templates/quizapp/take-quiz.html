@@ -21,12 +21,16 @@
     <div class="take-quiz-container question-view" id="view-{{question.question_number}}">
         <b>{{question.question_number}}. {{ question.text }}</b><br>
         <form>
+            <table>
         {% for answer in answers %}
             {% if answer.question == question %}
-                    <input type="radio" name="question-{{question.question_number}}" id="{{ answer | cut:' ' }}" value="{{answer}}"  data-result="{{answer.for_result }}">
-                    <label for="{{ answer | cut:' ' }}">{{ answer }}</label><br>
+                <tr>
+                    <td><input type="radio" name="question-{{question.question_number}}" id="{{ answer | cut:' ' }}" value="{{answer}}"  data-result="{{answer.for_result }}"></td>
+                    <td><label for="{{ answer | cut:' ' }}">{{ answer }}</label><br></td>
+                </tr>
             {% endif %}
         {% endfor %}
+            </table>
         </form>
     </div>
     {% endfor %}
@@ -39,6 +43,10 @@
         <div class="take-quiz-container result-view" id="result-{{ result.result_title | cut:' ' }}" data-resultName="{{ result }}">
         <div class="row justify-content-center"><h3>{{result.result_title}}</h3></div>
             <p>{{result.result_description}}</p>
+            <div class="row justify-content-center">
+                <a href="{% url 'home' %}" class="btn btn-info">Return Home</a>
+                <a href="/quiz/{{ quiz.url }}" class="btn btn-primary">Retake Quiz</a>
+            </div>
         </div>
     {% endfor %}
 </div>

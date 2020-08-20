@@ -1,5 +1,5 @@
 body {
-    background-color: gray;
+    background-color: #718d91;
     }
 
 #home-badge {
@@ -26,7 +26,7 @@ body {
     margin-bottom: 2px;
     }
 
-.make-quiz-container, .take-quiz-container {
+.make-quiz-container, .take-quiz-container, .list-container{
    width: 80%;
    height: auto;
    background: white;
@@ -84,4 +84,14 @@ body {
 
 .result-view, .question-view {
     display: none;
+    }
+
+#required-field-alert {
+    display: none;
+    }
+
+.result-view {
+    a {
+    margin: 3px;
+    }
     }

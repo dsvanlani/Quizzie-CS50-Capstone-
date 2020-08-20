@@ -3,13 +3,17 @@
 {% block title%}Quizzie - Browse{% endblock %}
 {% block body %}
 <div class="container list-container">
+    <h3>Browse Quizzes</h3>
     <ul id="quiz-list">
+        {% if quizzes %}
     {% for quiz in quizzes %}
         <li>
-            {{ quiz }} <a class="btn btn-link" href="/quiz/{{ quiz.url }}">Take</a>
+            <a href="/quiz/{{quiz.url}}">{{ quiz.title }}</a> by {{ quiz.author }}
         </li>
     {% endfor %}
-
+        {% else %}
+        <li>No Results matching "{{ search }}"</li>
+        {% endif %}
     </ul>
 </div>
 {% endblock %}
