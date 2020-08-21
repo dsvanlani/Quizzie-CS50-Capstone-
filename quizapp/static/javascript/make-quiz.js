@@ -29,7 +29,7 @@ function removeQuestion() {
 }
 
 function removeAnswer() {
-  this.parentElement.remove()
+  this.closest('tr').remove()
 }
 
 
@@ -81,133 +81,144 @@ function appendResult() {
 // -------- function to append a new question onto the document (state 3) ------
 function appendQuestion() {
 
-  let i = Date.now()
+  id = Date.now()
 
-  var questionForm = document.createElement('div')              // all elements go in here
-  questionForm.setAttribute('class','question-form')
+  var questionForm = document.createElement('div')
+  questionForm.setAttribute('class', 'question-form')
 
-    var questionLabel = document.createElement('label')         // question body label
-    questionLabel.setAttribute('for', 'question-body-'+i)
-    questionLabel.innerText = 'Question:'
-    var icon = document.createElement('div')
-    icon.innerHTML = document.querySelector('#trash-can-icon').innerHTML   // trash can icon
-    icon.onclick = removeQuestion
-    var br = document.createElement('br')
-    var questionInput = document.createElement('textarea')      // question body input
-    questionInput.setAttribute('id','question-body-'+i)
-    questionInput.setAttribute('class', 'question-body required-field')
+  var delIcon = document.createElement('div')
+  delIcon.innerHTML = document.querySelector('#trash-can-icon').innerHTML
+  delIcon.onclick = removeQuestion
+
+  var bodyLabel = document.createElement('label')     // question body label
+  bodyLabel.setAttribute('for','question-body-'+id)
+  bodyLabel.innerText = "Question:"
+  var body = document.createElement('textarea')       // question textarea
+  body.setAttribute('class',"question-body required-field")
+  body.id = 'question-body-'+id
+  body.setAttribute('class', 'question-body required-field')
+
+  var br = document.createElement('br')
 
   var answersBlock = document.createElement('div')
-  answersBlock.setAttribute('class','answers-block')
-  var rowDiv = document.createElement('div')                     // row for the answers area
-  rowDiv.setAttribute('class', 'row no-gutters')
+  answersBlock.setAttribute('class', 'answers-block')
 
-    var colDiv1 = document.createElement('div')                  // make a column
-    colDiv1.setAttribute('class','col')
+  var table = document.createElement('table')
+  table.setAttribute('class', 'table-responsive')
+  tableRow = document.createElement('tr')
 
-      var answerLabel = document.createElement('label')         //create answer label
-      answerLabel.innerText = 'Answer:'
-      answerLabel.setAttribute('for', 'AI'+i)
-      var answerInput = document.createElement('input')         //create answer input
-      answerInput.setAttribute('type','text')
-      answerInput.setAttribute('class','answer mx-auto required-field')
-      answerInput.setAttribute('id', 'AI'+i)
-      colDiv1.appendChild(answerLabel)
-      colDiv1.appendChild(answerInput)                          // Put them in same column
+  td1 = document.createElement('td')
+  td2 = document.createElement('td')
+  td3 = document.createElement('td')
+  td4 = document.createElement('td')
+  td5 = document.createElement('td')
 
-    var colDiv2 = document.createElement('div')                 // make another column
-    colDiv2.setAttribute('class','col')
+  answerLabel = document.createElement('label')
+  answerLabel.setAttribute('for','AI-'+id)
+  answerLabel.innerText = 'Answer:'
+  td1.appendChild(answerLabel)
 
-      var resultSelectLabel = document.createElement('label')       // select label
-      resultSelectLabel.innerText = 'For Result:'
-      resultSelectLabel.setAttribute('for','SI'+i)
-      var resultSelectInput = document.createElement('select')      // result input
-      resultSelectInput.setAttribute('class','result-selector required-field')
-      resultSelectInput.setAttribute('id', 'SI'+i)
-      //  --------  This gets populated by function "populateSelector" when you hit "next" or "back"
-      colDiv2.appendChild(resultSelectLabel)
-      colDiv2.appendChild(resultSelectInput)
+  answerInput = document.createElement('input')
+  answerInput.type = 'text'
+  answerInput.setAttribute('class', 'answer required-field')
+  answerInput.id = 'AI-'+id
+  td2.appendChild(answerInput)
 
-      var trashDiv = document.createElement('div')
-      trashDiv.innerHTML = document.querySelector('#trash-can-icon-2').innerHTML
-      trashDiv.onclick = removeAnswer
+  selectorLabel = document.createElement('label')
+  selectorLabel.setAttribute('for','RS-'+id)
+  selectorLabel.innerText = 'For Result:'
+  td3.appendChild(selectorLabel)
 
-      rowDiv.appendChild(colDiv1)
-      rowDiv.appendChild(colDiv2)
-      rowDiv.appendChild(trashDiv)
-      answersBlock.appendChild(rowDiv)
+  resultSelector = document.createElement('select')
+  resultSelector.setAttribute('class', 'result-selector required-field')
+  resultSelector.id = 'RS-'+ id
+  td4.appendChild(resultSelector)
 
+  var trashIcon = document.createElement('div')
+  trashIcon.setAttribute('class', 'answer-delete-icon')
+  trashIcon.innerHTML = document.querySelector('#trash-can-icon').innerHTML
+  trashIcon.onclick = removeAnswer
+  td5.appendChild(trashIcon)
 
-    var rowDiv2 = document.createElement('div')
-    rowDiv2.setAttribute('class','row justify-content-center')
-      var newAnswerButton = document.createElement('button')
-      newAnswerButton.setAttribute('class', 'btn btn-link add-answer-button')
-      newAnswerButton.innerText = 'Add answer'
-      newAnswerButton.onclick = appendAnswer
-      rowDiv2.appendChild(newAnswerButton)
-
-    var hr = document.createElement('hr')
+  tableRow.appendChild(td1)
+  tableRow.appendChild(td2)
+  tableRow.appendChild(td3)
+  tableRow.appendChild(td4)
+  tableRow.appendChild(td5)
+  table.appendChild(tableRow)
+  answersBlock.appendChild(table)
 
 
-    questionForm.appendChild(icon)
-    questionForm.appendChild(questionLabel)
-    questionForm.appendChild(br)
-    questionForm.appendChild(questionInput)
-    questionForm.appendChild(answersBlock)
-    questionForm.appendChild(rowDiv2)
-    questionForm.appendChild(hr)
+  var answerButtonDiv = document.createElement('div')
+  answerButtonDiv.setAttribute('class','row justify-content-center')
+  var answerButton = document.createElement('button')
+  answerButton.setAttribute('class', "btn btn-link add-answer-button")
+  answerButton.innerText = "Add answer"
+  answerButton.onclick = appendAnswer
+  answerButtonDiv.appendChild(answerButton)
 
-    /// ------- Now finally add it to the page ------
-    document.querySelector('#question-block').appendChild(questionForm)
-    // ----- and populate its selector
-    populateResultsSelectors()
+  var hr = document.createElement('hr')
+
+  questionForm.appendChild(delIcon)
+  questionForm.appendChild(bodyLabel)
+  questionForm.appendChild(br)
+  questionForm.appendChild(body)
+  questionForm.appendChild(answersBlock)
+  questionForm.appendChild(answerButtonDiv)
+  questionForm.appendChild(hr)
+
+
+  /// ------- Now finally add it to the page ------
+  document.querySelector('#question-block').appendChild(questionForm)
+  // ----- and populate its selector
+  populateResultsSelectors()
+
 }
-
 // ------ function to add another answer field onto the document (state 3)
 function appendAnswer() {
 
-  dateString = String(Date.now())
-  var rowDiv = document.createElement('div')                   // row for the answers area
-  rowDiv.setAttribute('class', 'row no-gutters')
+  tableRow = document.createElement('tr')
 
-    var colDiv1 = document.createElement('div')                // make a column
-    colDiv1.setAttribute('class','col')
+  td1 = document.createElement('td')
+  td2 = document.createElement('td')
+  td3 = document.createElement('td')
+  td4 = document.createElement('td')
+  td5 = document.createElement('td')
 
-      uniqueID = 'AI' + dateString
-      var answerLabel = document.createElement('label')           //create answer label
-      answerLabel.innerText = 'Answer:'
-      answerLabel.setAttribute('for', uniqueID)
-      var answerInput = document.createElement('input')           //create answer input
-      answerInput.setAttribute('type','text')
-      answerInput.setAttribute('class','answer mx-auto required-field')
-      answerInput.setAttribute('id', uniqueID)
-      colDiv1.appendChild(answerLabel)
-      colDiv1.appendChild(answerInput)                         // Put them in same column
+  answerLabel = document.createElement('label')
+  answerLabel.setAttribute('for','AI-'+id)
+  answerLabel.innerText = 'Answer:'
+  td1.appendChild(answerLabel)
 
-    var colDiv2 = document.createElement('div')                // make another column
-    colDiv2.setAttribute('class','col')
+  answerInput = document.createElement('input')
+  answerInput.type = 'text'
+  answerInput.setAttribute('class', 'answer required-field')
+  answerInput.id = 'AI-'+id
+  td2.appendChild(answerInput)
 
-      uniqueID = 'RS' + dateString
-      var resultSelectLabel = document.createElement('label')       // select label
-      resultSelectLabel.innerText = 'For Result:'
-      resultSelectLabel.setAttribute('for', uniqueID)
-      var resultSelectInput = document.createElement('select')      // result input
-      resultSelectInput.setAttribute('class','result-selector required-field')
-      resultSelectInput.setAttribute('id', uniqueID)
+  selectorLabel = document.createElement('label')
+  selectorLabel.setAttribute('for','RS-'+id)
+  selectorLabel.innerText = 'For Result:'
+  td3.appendChild(selectorLabel)
 
-      var trashDiv = document.createElement('div')
-      trashDiv.innerHTML = document.querySelector('#trash-can-icon-2').innerHTML
-      trashDiv.onclick = removeAnswer
+  resultSelector = document.createElement('select')
+  resultSelector.setAttribute('class', 'result-selector required-field')
+  resultSelector.id = 'RS-'+ id
+  td4.appendChild(resultSelector)
 
-      //  --------  This gets populated by function "populateResultsSelectors" when you hit "next" or "back"
-      colDiv2.appendChild(resultSelectLabel)
-      colDiv2.appendChild(resultSelectInput)
+  var trashIcon = document.createElement('div')
+  trashIcon.setAttribute('class', 'answer-delete-icon')
+  trashIcon.innerHTML = document.querySelector('#trash-can-icon').innerHTML
+  trashIcon.onclick = removeAnswer
+  td5.appendChild(trashIcon)
 
-      rowDiv.appendChild(colDiv1)         // put both columns into the row
-      rowDiv.appendChild(colDiv2)
-      rowDiv.appendChild(trashDiv)
+  tableRow.appendChild(td1)
+  tableRow.appendChild(td2)
+  tableRow.appendChild(td3)
+  tableRow.appendChild(td4)
+  tableRow.appendChild(td5)
 
-      this.parentElement.parentElement.querySelector('.answers-block').appendChild(rowDiv) // append it on
+  this.closest('.question-form').querySelector('table').appendChild(tableRow)
 
       // populate the results again
       populateResultsSelectors()
@@ -368,6 +379,7 @@ function finishQuiz() {
 
       document.querySelector('#state-5').style.display = "block"
       document.querySelector('#state-4').style.display = "none"
+      localStorage.clear()
       }
 
     })
