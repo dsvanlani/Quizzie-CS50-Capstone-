@@ -3,6 +3,7 @@ body {
 }
 
 #home-badge {
+  animation: 1.25s ease-out 0s 1 slideInFromBottom;
   margin: 40px;
   width: 350px;
   height: 475px;
@@ -114,6 +115,17 @@ body {
 
 a, a:hover {
   color: #6db0a8;
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    margin-top: translateX(0);
+    opacity: 1;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
