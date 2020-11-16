@@ -6,6 +6,14 @@ from quizapp.models import *
 import traceback
 from random import randrange
 
+#Functions
+
+def getSearchResults(string):
+    quizzes = Quiz.objects.filter(title__icontains=string)
+    quizzes |= Quiz.objects.filter(author__icontains=string)
+    return quizzes
+
+
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
@@ -18,27 +26,18 @@ def home(request):
 
 
 def quiz_list(request):
-    all_quizzes = Quiz.objects.all()
-
-    if request.GET.get('search'):
-        results = Quiz.objects.none()
-        substring = request.GET.get('search')
-        i=0
-        while i < len(all_quizzes):
-            quiz = all_quizzes[i]
-            if substring in quiz.title or substring in quiz.author:
-                results |= Quiz.objects.filter(id=quiz.id)
-            i += 1
-
+    try:
+        quizzes = getSearchResults(request.GET['search'])
         context = {
-            "quizzes": results,
-            "search": substring
+            "quizzes": quizzes,
+            "search": request.GET['search']
+        }
+    except:
+        quizzes = Quiz.objects.all()
+        context = {
+            "quizzes": quizzes
         }
 
-    else:
-        context = {
-            "quizzes": all_quizzes
-        }
     return render(request, 'quizapp/quiz-list.html', context)
 
 def random_quiz(request):

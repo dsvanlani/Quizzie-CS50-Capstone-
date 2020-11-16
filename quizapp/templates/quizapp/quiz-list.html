@@ -2,8 +2,22 @@
 
 {% block title%}Quizzie - Browse{% endblock %}
 {% block body %}
-<div class="container list-container">
-    <h3>Browse Quizzes</h3>
+<div class="container-fluid list-container">
+    <div class="row">
+        <div class="col text-center">
+            <h3>Browse Quizzes</h3>
+            <hr>
+        </div>
+    </div>
+    <div class="row" id="search-row">
+        <div class="col">
+            <form class="form form-inline" action="/all-quizzes">
+                <input type="text" name="search" class="form-control" placeholder="Search" id="quiz-list-search-input" aria-label="search">
+                <input type="submit" class="btn btn-info form-control" id="quiz-list-search-button">
+            </form>
+        </div>
+    </div>
+
     <ul id="quiz-list">
         {% if quizzes %}
     {% for quiz in quizzes %}
